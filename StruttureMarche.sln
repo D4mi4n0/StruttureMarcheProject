@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StruttureMarche", "Struttur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marche.modelli", "Marche.modelli\Marche.modelli.csproj", "{70D2055F-18F8-4EB8-A3D8-936603AB1893}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAPI", "TestAPI\TestAPI.csproj", "{9F5E6735-CEB5-482A-A47E-D38177B4181D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{70D2055F-18F8-4EB8-A3D8-936603AB1893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70D2055F-18F8-4EB8-A3D8-936603AB1893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70D2055F-18F8-4EB8-A3D8-936603AB1893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F5E6735-CEB5-482A-A47E-D38177B4181D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F5E6735-CEB5-482A-A47E-D38177B4181D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F5E6735-CEB5-482A-A47E-D38177B4181D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F5E6735-CEB5-482A-A47E-D38177B4181D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
