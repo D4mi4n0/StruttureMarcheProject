@@ -11,7 +11,7 @@ namespace FunzioneServiziMarche.WSSOAP
         public ModelliServiziMarche[] DaiTuttiServizi();
 
         [OperationContract]
-        public ModelliServiziMarche[] RicercaTuttiServizi(String Ricerca);
+        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione, string comune, string provincia, string categoria);
 
         [OperationContract]
         public ModelliServiziMarche[] RicercaServiziPerCategoria();
@@ -24,9 +24,9 @@ namespace FunzioneServiziMarche.WSSOAP
             return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
 
-        public ModelliServiziMarche[] RicercaTuttiServizi(string Ricerca)
+        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione, string comune, string provincia, string categoria)
         {
-            return FunzioniInterrogazioniServiziMarche.RicercaServizi(Ricerca).Result;
+            return FunzioniInterrogazioniServiziMarche.RicercaServizi(denominazione, comune, provincia, categoria).Result;
         }
 
         public ModelliServiziMarche[] RicercaServiziPerCategoria()

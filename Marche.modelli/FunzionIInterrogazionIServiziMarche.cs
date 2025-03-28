@@ -10,7 +10,6 @@ namespace Marche.modelli
 {
     public static class FunzioniInterrogazioniServiziMarche
     {
-
         public static async Task<ModelliServiziMarche[]> DaiServizi()
         {
             string BaseUri = "http://www.datiopen.it/export/json/Regione-Marche---Mappa-delle-strutture-ricettive.json";
@@ -18,18 +17,36 @@ namespace Marche.modelli
             var response = await httpClient.GetAsync(BaseUri);
             string contents = await response.Content.ReadAsStringAsync();
 
-
             ModelliServiziMarche[] elencoLocali = JsonConvert.DeserializeObject<ModelliServiziMarche[]>(contents);
 
             return elencoLocali;
-
         }
 
-        public static async Task<ModelliServiziMarche[]> RicercaServizi(String RicercaPerDenominazione)
+        public static async Task<ModelliServiziMarche[]> RicercaServizi(string denominazione, string comune, string provincia, string categoria)
         {
             ModelliServiziMarche[] tuttiLocali = await DaiServizi();
 
-            return tuttiLocali.Where(s => s.Denominazione.ToLower().Contains(RicercaPerDenominazione.ToLower())).ToArray();
+            if (!string.IsNullOrEmpty(denominazione))
+            {
+                tuttiLocali = tuttiLocali.Where(s => s.Denominazione.Contains(denominazione, StringComparison.OrdinalIgnoreCase)).ToArray();
+            }
+
+            if (!string.IsNullOrEmpty(comune))
+            {
+                tuttiLocali = tuttiLocali.Where(s => s.Comune.Contains(comune, StringComparison.OrdinalIgnoreCase)).ToArray();
+            }
+
+            if (!string.IsNullOrEmpty(provincia))
+            {
+                tuttiLocali = tuttiLocali.Where(s => s.Provincia.Contains(provincia, StringComparison.OrdinalIgnoreCase)).ToArray();
+            }
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                tuttiLocali = tuttiLocali.Where(s => s.CategoriaStruttura.Contains(categoria, StringComparison.OrdinalIgnoreCase)).ToArray();
+            }
+
+            return tuttiLocali;
         }
 
         public static async Task<ModelliServiziMarche[]> RicercaServiziPerCategoria()
