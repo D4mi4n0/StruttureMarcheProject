@@ -10,7 +10,7 @@ namespace StruttureMarche.Controllers
     {
         public async Task<IActionResult> Index(string denominazione, string comune, string provincia, string categoria, int pageNumber = 1, int pageSize = 10)
         {
-            var elencoStrutture = await FunzioniInterrogazioniServiziMarche.DaiTuttiIServizi();
+            var elencoStrutture = await FunzioniInterrogazioniServiziMarche.DaiServizi();
             var comuni = elencoStrutture.Select(s => s.Comune).Distinct().ToList();
             var categorie = elencoStrutture.Select(s => s.CategoriaStruttura).Distinct().ToList();
 

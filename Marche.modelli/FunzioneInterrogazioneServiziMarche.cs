@@ -11,7 +11,7 @@ namespace Marche.modelli
     public static class FunzioniInterrogazioniServiziMarche
     {
 
-        public static async Task<ModelliServiziMarche[]> DaiTuttiIServizi()
+        public static async Task<ModelliServiziMarche[]> DaiServizi()
         {
             string BaseUri = "http://www.datiopen.it/export/json/Regione-Marche---Mappa-delle-strutture-ricettive.json";
             var httpClient = new HttpClient();
@@ -27,14 +27,14 @@ namespace Marche.modelli
 
         public static async Task<ModelliServiziMarche[]> RicercaServizi(String RicercaPerDenominazione)
         {
-            ModelliServiziMarche[] tuttiLocali = await DaiTuttiIServizi();
+            ModelliServiziMarche[] tuttiLocali = await DaiServizi();
 
             return tuttiLocali.Where(s => s.Denominazione.ToLower().Contains(RicercaPerDenominazione.ToLower())).ToArray();
         }
 
         public static async Task<ModelliServiziMarche[]> RicercaServiziPerCategoria()
         {
-            ModelliServiziMarche[] tuttiLocali = await DaiTuttiIServizi();
+            ModelliServiziMarche[] tuttiLocali = await DaiServizi();
 
             return tuttiLocali.OrderBy(s => s.CategoriaStruttura).ToArray();
         }

@@ -8,10 +8,10 @@ namespace FunzioneServiziMarche.WSSOAP
     public interface IFunzioneMarche
     {
         [OperationContract]
-        public ModelliServiziMarche[] DaiTuttiIServizi();
+        public ModelliServiziMarche[] DaiTuttiServizi();
 
         [OperationContract]
-        public ModelliServiziMarche[] RicercaServizi(String Ricerca);
+        public ModelliServiziMarche[] RicercaTuttiServizi(String Ricerca);
 
         [OperationContract]
         public ModelliServiziMarche[] RicercaServiziPerCategoria();
@@ -19,12 +19,12 @@ namespace FunzioneServiziMarche.WSSOAP
 
     public class FunzionePerServizi : IFunzioneMarche
     {
-        public ModelliServiziMarche[] DaiTuttiIServizi()
+        public ModelliServiziMarche[] DaiTuttiServizi()
         {
-            return FunzioniInterrogazioniServiziMarche.DaiTuttiIServizi().Result;
+            return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
 
-        public ModelliServiziMarche[] RicercaServizi(string Ricerca)
+        public ModelliServiziMarche[] RicercaTuttiServizi(string Ricerca)
         {
             return FunzioniInterrogazioniServiziMarche.RicercaServizi(Ricerca).Result;
         }
