@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace StruttureMarche.Pages
+namespace StruttureMarche.Views
 {
-    public class HomeModel : PageModel
+    public class PrivacyModel : PageModel
     {
         public void OnGet()
         {

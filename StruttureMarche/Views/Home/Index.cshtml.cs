@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace StruttureMarche.Pages
+namespace StruttureMarche.Views
 {
     public class IndexModel : PageModel
     {

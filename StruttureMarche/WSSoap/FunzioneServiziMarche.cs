@@ -1,4 +1,5 @@
 ﻿using Marche.modelli;
+using Marche.modelli.Modelli;
 using System.ServiceModel;
 
 namespace FunzioneServiziMarche.WSSOAP

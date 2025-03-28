@@ -1,0 +1,136 @@
+﻿@model StruttureMarche.ViewModels.ElencoStruttureMarcheViewModel
+@{
+    ViewData["Title"] = "Strutture Marche - Ricerca";
+    int totalPages = (int)Math.Ceiling((double)Model.TotalCount / Model.PageSize);
+    int currentPage = Model.PageNumber;
+    int maxPagesToShow = 9;
+    int startPage = Math.Max(1, currentPage - maxPagesToShow / 2);
+    int endPage = Math.Min(totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow)
+    {
+        startPage = Math.Max(1, endPage - maxPagesToShow + 1);
+    }
+}
+
+<h1 class="margin-bottom-20">Ricerca Strutture</h1>
+
+<form method="get" asp-controller="Ricerca" asp-action="Index" class="margin-bottom-20" onsubmit="showLoadingSpinner()">
+    <div class="row">
+        <div class="col-md-3 margin-bottom-20">
+            <label for="denominazione">Denominazione</label>
+            <input type="text" class="form-control" id="denominazione" name="denominazione" value="@Model.Denominazione" />
+        </div>
+        <div class="col-md-3 margin-bottom-20">
+            <label for="comune">Comune</label>
+            <input type="text" class="form-control" id="comune" name="comune" value="@Model.Comune" />
+        </div>
+        <div class="col-md-3 margin-bottom-20">
+            <label for="provincia">Provincia</label>
+            <input type="text" class="form-control" id="provincia" name="provincia" value="@Model.Provincia" />
+        </div>
+        <div class="col-md-3 margin-bottom-20 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">Cerca</button>
+            <a href="@Url.Action("Reset", "Ricerca")" class="btn btn-secondary ms-2" onclick="showLoadingSpinner()">Reset</a>
+        </div>
+    </div>
+</form>
+
+<div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<h2 class="margin-bottom-20">Elenco Strutture</h2>
+<div class="container gray-background padding-10">
+    @if (Model.ElencoStrutture.Any())
+    {
+        <table class="table margin-bottom-20">
+            <thead>
+                <tr>
+                    <th>Denominazione</th>
+                    <th>Comune</th>
+                    <th>Provincia</th>
+                    <th>Indirizzo</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var struttura in Model.ElencoStrutture)
+                {
+                    <tr>
+                        <td>@struttura.Denominazione</td>
+                        <td>@struttura.Comune</td>
+                        <td>@struttura.Provincia</td>
+                        <td>@struttura.Indirizzo</td>
+                        <td>@struttura.Telefono</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Nessun risultato trovato.
+        </div>
+    }
+</div>
+
+@* Paginazione *@
+@if (totalPages > 1)
+{
+    <nav class="mt-4" aria-label="Page navigation">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="?pageNumber=@(currentPage - 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=1&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(currentPage == i ? "active" : "")">
+                    <a class="page-link" href="?pageNumber=@i&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">@i</a>
+                </li>
+            }
+            @if (endPage < totalPages)
+            {
+                @if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=@totalPages&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">@totalPages</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?pageNumber=@(currentPage + 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@section Scripts {
+    <script>
+        function showLoadingSpinner() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    </script>
+}
