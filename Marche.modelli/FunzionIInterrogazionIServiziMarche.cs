@@ -22,38 +22,10 @@ namespace Marche.modelli
             return elencoLocali;
         }
 
-        public static async Task<ModelliServiziMarche[]> RicercaServizi(string denominazione, string comune, string provincia, string categoria)
+        public static async Task<ModelliServiziMarche[]> RicercaServizi(string denominazione)
         {
             ModelliServiziMarche[] tuttiLocali = await DaiServizi();
-
-            if (!string.IsNullOrEmpty(denominazione))
-            {
-                tuttiLocali = tuttiLocali.Where(s => s.Denominazione.Contains(denominazione, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-
-            if (!string.IsNullOrEmpty(comune))
-            {
-                tuttiLocali = tuttiLocali.Where(s => s.Comune.Contains(comune, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-
-            if (!string.IsNullOrEmpty(provincia))
-            {
-                tuttiLocali = tuttiLocali.Where(s => s.Provincia.Contains(provincia, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-
-            if (!string.IsNullOrEmpty(categoria))
-            {
-                tuttiLocali = tuttiLocali.Where(s => s.CategoriaStruttura.Contains(categoria, StringComparison.OrdinalIgnoreCase)).ToArray();
-            }
-
-            return tuttiLocali;
-        }
-
-        public static async Task<ModelliServiziMarche[]> RicercaServiziPerCategoria()
-        {
-            ModelliServiziMarche[] tuttiLocali = await DaiServizi();
-
-            return tuttiLocali.OrderBy(s => s.CategoriaStruttura).ToArray();
+            return tuttiLocali.Where(s=>s.Denominazione.ToLower().Contains(denominazione.ToLower())).ToArray();
         }
     }
 }

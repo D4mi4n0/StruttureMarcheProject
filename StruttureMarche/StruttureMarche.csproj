@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Marche.modelli\Marche.modelli.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>

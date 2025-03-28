@@ -11,10 +11,7 @@ namespace FunzioneServiziMarche.WSSOAP
         public ModelliServiziMarche[] DaiTuttiServizi();
 
         [OperationContract]
-        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione, string comune, string provincia, string categoria);
-
-        [OperationContract]
-        public ModelliServiziMarche[] RicercaServiziPerCategoria();
+        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione);
     }
 
     public class FunzionePerServizi : IFunzioneMarche
@@ -24,14 +21,11 @@ namespace FunzioneServiziMarche.WSSOAP
             return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
 
-        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione, string comune, string provincia, string categoria)
+        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione)
         {
-            return FunzioniInterrogazioniServiziMarche.RicercaServizi(denominazione, comune, provincia, categoria).Result;
+            return FunzioniInterrogazioniServiziMarche.RicercaServizi(denominazione).Result;
         }
 
-        public ModelliServiziMarche[] RicercaServiziPerCategoria()
-        {
-            return FunzioniInterrogazioniServiziMarche.RicercaServiziPerCategoria().Result;
-        }
+    
     }
 }
