@@ -10,6 +10,8 @@ namespace StruttureMarche.ViewModels
         public string Provincia { get; set; }
         public List<string> Comuni { get; set; }
         public ModelliServiziMarche[] ElencoStrutture { get; set; }
+        public string Categoria { get; set; }
+        public List<string> Categorie { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }

@@ -29,6 +29,7 @@
             <label for="provincia">Provincia</label>
             <input type="text" class="form-control" id="provincia" name="provincia" value="@Model.Provincia" />
         </div>
+        <input type="hidden" id="categoria" name="categoria" value="@Model.Categoria" />
         <div class="col-md-3 margin-bottom-20 d-flex align-items-end">
             <button type="submit" class="btn btn-primary me-2">Cerca</button>
             <a href="@Url.Action("Reset", "Ricerca")" class="btn btn-secondary ms-2" onclick="showLoadingSpinner()">Reset</a>
@@ -36,46 +37,76 @@
     </div>
 </form>
 
-<div id="loading-overlay" class="loading-overlay" style="display: none;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div>
-
-<h2 class="margin-bottom-20">Elenco Strutture</h2>
-<div class="container gray-background padding-10">
-    @if (Model.ElencoStrutture.Any())
-    {
-        <table class="table margin-bottom-20">
-            <thead>
-                <tr>
-                    <th>Denominazione</th>
-                    <th>Comune</th>
-                    <th>Provincia</th>
-                    <th>Indirizzo</th>
-                    <th>Telefono</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var struttura in Model.ElencoStrutture)
-                {
-                    <tr>
-                        <td>@struttura.Denominazione</td>
-                        <td>@struttura.Comune</td>
-                        <td>@struttura.Provincia</td>
-                        <td>@struttura.Indirizzo</td>
-                        <td>@struttura.Telefono</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-warning" role="alert">
-            Nessun risultato trovato.
+<div class="row">
+    <div class="col-9">
+        <h2 class="margin-bottom-20">Elenco Strutture</h2>
+        <div class="container gray-background padding-10">
+            @if (Model.ElencoStrutture.Any())
+            {
+                <table class="table margin-bottom-20">
+                    <thead>
+                        <tr>
+                            <th>Denominazione</th>
+                            <th>Comune</th>
+                            <th>Provincia</th>
+                            <th>Indirizzo</th>
+                            <th>Telefono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var struttura in Model.ElencoStrutture)
+                        {
+                            <tr>
+                                <td>@struttura.Denominazione</td>
+                                <td>@struttura.Comune</td>
+                                <td>@struttura.Provincia</td>
+                                <td>@struttura.Indirizzo</td>
+                                <td>@struttura.Telefono</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    Nessun risultato trovato.
+                </div>
+            }
         </div>
-    }
+    </div>
+    <div class="col-3">
+        <div class="card">
+            <h5 class="card-header">
+                Categoria
+            </h5>
+            <div class="card-body" style="overflow-y: auto; max-height: 32rem;">
+                <form id="filterForm" method="get" asp-controller="Ricerca" asp-action="Index">
+                    <input type="hidden" name="denominazione" value="@Model.Denominazione" />
+                    <input type="hidden" name="comune" value="@Model.Comune" />
+                    <input type="hidden" name="provincia" value="@Model.Provincia" />
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="categoria" id="tutte" value=""
+                        @(string.IsNullOrEmpty(Model.Categoria) ? "checked" : "")>
+                        <label class="form-check-label" for="tutte">
+                            Tutte
+                        </label>
+                    </div>
+                    <hr>
+                    @foreach (var categoria in Model.Categorie)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="categoria" id="@categoria"
+                                   value="@categoria" @(Model.Categoria == categoria ? "checked" : "")>
+                            <label class="form-check-label d-block" for="@categoria">
+                                @categoria
+                            </label>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @* Paginazione *@
@@ -84,14 +115,14 @@
     <nav class="mt-4" aria-label="Page navigation">
         <ul class="pagination justify-content-center mb-0">
             <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                <a class="page-link" href="?pageNumber=@(currentPage - 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia" aria-label="Previous">
+                <a class="page-link" href="?pageNumber=@(currentPage - 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia&categoria=@Model.Categoria" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             @if (startPage > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" href="?pageNumber=1&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">1</a>
+                    <a class="page-link" href="?pageNumber=1&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia&categoria=@Model.Categoria">1</a>
                 </li>
                 @if (startPage > 2)
                 {
@@ -103,7 +134,7 @@
             @for (int i = startPage; i <= endPage; i++)
             {
                 <li class="page-item @(currentPage == i ? "active" : "")">
-                    <a class="page-link" href="?pageNumber=@i&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">@i</a>
+                    <a class="page-link" href="?pageNumber=@i&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia&categoria=@Model.Categoria">@i</a>
                 </li>
             }
             @if (endPage < totalPages)
@@ -115,11 +146,11 @@
                     </li>
                 }
                 <li class="page-item">
-                    <a class="page-link" href="?pageNumber=@totalPages&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia">@totalPages</a>
+                    <a class="page-link" href="?pageNumber=@totalPages&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia&categoria=@Model.Categoria">@totalPages</a>
                 </li>
             }
             <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                <a class="page-link" href="?pageNumber=@(currentPage + 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia" aria-label="Next">
+                <a class="page-link" href="?pageNumber=@(currentPage + 1)&denominazione=@Model.Denominazione&comune=@Model.Comune&provincia=@Model.Provincia&categoria=@Model.Categoria" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -132,5 +163,11 @@
         function showLoadingSpinner() {
             document.getElementById('loading-overlay').style.display = 'flex';
         }
+
+        document.querySelectorAll('input[name="categoria"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+                document.getElementById('categoria').value = event.target.value;
+            });
+        });
     </script>
 }
