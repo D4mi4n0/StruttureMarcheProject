@@ -7,24 +7,20 @@ namespace TestAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class Testcontroller : ControllerBase
+    public class testcontroller : ControllerBase
     {
         [HttpGet]
-        public ModelliServiziMarche[] DaiTuttiIServizi()
+        public ModelliServiziMarche[] DaiTuttiServizi()
         {
+            // Uso di .Result per ottenere il risultato sincrono
             return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
 
         [HttpGet]
-        public ModelliServiziMarche[] RicercaTuttiIServizi(string Ricerca)
+        public ModelliServiziMarche[] RicercaStrutture(string denominazione, string comune, string provincia)
         {
-            return FunzioniInterrogazioniServiziMarche.RicercaServizi(Ricerca).Result;
-        }
-
-        [HttpGet]
-        public ModelliServiziMarche[] RicercaServiziPerCategoria()
-        {
-            return FunzioniInterrogazioniServiziMarche.RicercaServiziPerCategoria().Result;
+            // Uso di .Result per ottenere il risultato sincrono
+            return FunzioniInterrogazioniServiziMarche.RicercaStrutture(denominazione, comune, provincia).Result;
         }
     }
 }

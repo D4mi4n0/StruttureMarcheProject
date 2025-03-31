@@ -11,21 +11,21 @@ namespace FunzioneServiziMarche.WSSOAP
         public ModelliServiziMarche[] DaiTuttiServizi();
 
         [OperationContract]
-        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione);
+        public ModelliServiziMarche[] RicercaStrutture(string denominazione, string comune, string provincia);
     }
 
     public class FunzionePerServizi : IFunzioneMarche
     {
         public ModelliServiziMarche[] DaiTuttiServizi()
         {
+            // Uso di .Result per ottenere il risultato sincrono
             return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
 
-        public ModelliServiziMarche[] RicercaTuttiServizi(string denominazione)
+        public ModelliServiziMarche[] RicercaStrutture(string denominazione, string comune, string provincia)
         {
-            return FunzioniInterrogazioniServiziMarche.RicercaServizi(denominazione).Result;
+            // Uso di .Result per ottenere il risultato sincrono
+            return FunzioniInterrogazioniServiziMarche.RicercaStrutture(denominazione, comune, provincia).Result;
         }
-
-    
     }
 }
