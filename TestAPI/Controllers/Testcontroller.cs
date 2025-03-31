@@ -10,11 +10,12 @@ namespace TestAPI.Controllers
     public class testcontroller : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> DaiTuttiServizi()
+        public ModelliServiziMarche[] DaiTuttiServizi()
         {
-            var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
-            return Ok(servizi);
+            Console.WriteLine("🔹 Chiamata ricevuta per DaiTuttiServizi");
+            return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
         }
+
 
 
         [HttpGet]

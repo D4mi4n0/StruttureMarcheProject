@@ -10,7 +10,7 @@ namespace FunzioneServiziMarche.WSSOAP
         [OperationContract]
         public ModelliServiziMarche[] DaiTuttiServizi();
 
-        [OperationContract]
+        [OperationContract]            
         public ModelliServiziMarche[] RicercaStrutture(string denominazione, string comune, string provincia);
     }
 
