@@ -10,17 +10,19 @@ namespace TestAPI.Controllers
     public class testcontroller : ControllerBase
     {
         [HttpGet]
-        public ModelliServiziMarche[] DaiTuttiServizi()
+        public async Task<IActionResult> DaiTuttiServizi()
         {
-            // Uso di .Result per ottenere il risultato sincrono
-            return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
+            var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
+            return Ok(servizi);
         }
 
+
         [HttpGet]
-        public ModelliServiziMarche[] RicercaStrutture(string denominazione, string comune, string provincia)
+        public async Task<IActionResult> RicercaStrutture(string? denominazione = "", string? comune = "", string? provincia = "")
         {
-            // Uso di .Result per ottenere il risultato sincrono
-            return FunzioniInterrogazioniServiziMarche.RicercaStrutture(denominazione, comune, provincia).Result;
+            var risultati = await FunzioniInterrogazioniServiziMarche.RicercaStrutture(denominazione ?? "", comune ?? "", provincia ?? "");
+            return Ok(risultati);
         }
+
     }
 }
