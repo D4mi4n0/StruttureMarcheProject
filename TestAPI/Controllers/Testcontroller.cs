@@ -10,13 +10,19 @@ namespace TestAPI.Controllers
     public class testcontroller : ControllerBase
     {
         [HttpGet]
-        public ModelliServiziMarche[] DaiTuttiServizi()
+        public async Task<IActionResult> DaiTuttiServizi()
         {
-            Console.WriteLine("🔹 Chiamata ricevuta per DaiTuttiServizi");
-            return FunzioniInterrogazioniServiziMarche.DaiServizi().Result;
+            try
+            {
+                var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
+                return Ok(servizi); // Restituisce i dati come JSON
+            }
+            catch (Exception ex)
+            {
+                // Gestione degli errori: restituisce un errore 500 se qualcosa va storto
+                return StatusCode(500, $"Errore interno: {ex.Message}");
+            }
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> RicercaStrutture(string? denominazione = "", string? comune = "", string? provincia = "")
