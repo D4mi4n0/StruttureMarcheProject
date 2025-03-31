@@ -2,6 +2,7 @@
 using Marche.modelli.Modelli;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace TestAPI.Controllers
 {
@@ -12,17 +13,22 @@ namespace TestAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> DaiTuttiServizi()
         {
-            try
-            {
-                var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
-                return Ok(servizi); // Restituisce i dati come JSON
-            }
-            catch (Exception ex)
-            {
-                // Gestione degli errori: restituisce un errore 500 se qualcosa va storto
-                return StatusCode(500, $"Errore interno: {ex.Message}");
-            }
+            const int maxResults = 3000;  // Limite massimo di risultati da restituire
+
+            // Recupera tutti i servizi
+            var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
+
+            // Limita il numero di risultati per evitare di restituire troppi dati
+            var limitedServizi = servizi.Take(maxResults).ToArray();
+
+            // Restituisci i dati limitati
+            return Ok(limitedServizi);
         }
+
+
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> RicercaStrutture(string? denominazione = "", string? comune = "", string? provincia = "")
