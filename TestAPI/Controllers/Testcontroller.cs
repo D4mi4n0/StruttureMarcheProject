@@ -13,7 +13,7 @@ namespace TestAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> DaiTuttiServizi()
         {
-            const int maxResults = 3000;  // Limite massimo di risultati da restituire
+            const int maxResults = 1000;  // Limite massimo di risultati da restituire
 
             // Recupera tutti i servizi
             var servizi = await FunzioniInterrogazioniServiziMarche.DaiServizi();
