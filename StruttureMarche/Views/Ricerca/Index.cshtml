@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Marche.modelli.Modelli.ModelliServiziMarche>
+@{
+    ViewData["Title"] = "Ricerca Strutture";
+    int pageIndex = Context.Request.Query["page"].Any() ? int.Parse(Context.Request.Query["page"]) : 1;
+    int pageSize = 10; // Imposta il numero di elementi per pagina
+    int totalItems = (int)ViewData["TotalItems"];
+    int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+}
+
+<h1>Ricerca Strutture</h1>
+
+<form method="get" asp-controller="Ricerca" asp-action="Index">
+    <div class="form-group">
+        <label for="denominazione">Denominazione</label>
+        <input type="text" id="denominazione" name="denominazione" class="form-control" value="@Context.Request.Query["denominazione"]" />
+    </div>
+    <div class="form-group">
+        <label for="comune">Comune</label>
+        <input type="text" id="comune" name="comune" class="form-control" value="@Context.Request.Query["comune"]" />
+    </div>
+    <div class="form-group">
+        <label for="provincia">Provincia</label>
+        <input type="text" id="provincia" name="provincia" class="form-control" value="@Context.Request.Query["provincia"]" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Cerca</button>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Denominazione</th>
+                <th>Comune</th>
+                <th>Provincia</th>
+                <th>Indirizzo</th>
+                <th>Telefono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var struttura in Model)
+            {
+                <tr>
+                    <td>@struttura.Denominazione</td>
+                    <td>@struttura.Comune</td>
+                    <td>@struttura.Provincia</td>
+                    <td>@struttura.Indirizzo</td>
+                    <td>@struttura.Telefono</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Paginazione compatta -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(pageIndex > 1 ? "" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Ricerca", new { page = pageIndex - 1, denominazione = Context.Request.Query["denominazione"], comune = Context.Request.Query["comune"], provincia = Context.Request.Query["provincia"] })" aria-label="Previous">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
+            </li>
+
+            @if (pageIndex > 3)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Ricerca", new { page = 1, denominazione = Context.Request.Query["denominazione"], comune = Context.Request.Query["comune"], provincia = Context.Request.Query["provincia"] })">1</a>
+                </li>
+                @if (pageIndex > 4)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+
+            @for (int i = Math.Max(1, pageIndex - 2); i <= Math.Min(totalPages, pageIndex + 2); i++)
+            {
+                <li class="page-item @(i == pageIndex ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Ricerca", new { page = i, denominazione = Context.Request.Query["denominazione"], comune = Context.Request.Query["comune"], provincia = Context.Request.Query["provincia"] })">@i</a>
+                </li>
+            }
+
+            @if (pageIndex < totalPages - 2)
+            {
+                @if (pageIndex < totalPages - 3)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Ricerca", new { page = totalPages, denominazione = Context.Request.Query["denominazione"], comune = Context.Request.Query["comune"], provincia = Context.Request.Query["provincia"] })">@totalPages</a>
+                </li>
+            }
+
+            <li class="page-item @(pageIndex < totalPages ? "" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Ricerca", new { page = pageIndex + 1, denominazione = Context.Request.Query["denominazione"], comune = Context.Request.Query["comune"], provincia = Context.Request.Query["provincia"] })" aria-label="Next">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+}
+else if (Model != null)
+{
+    <p class="mt-4 text-warning">Nessuna struttura trovata con i criteri specificati.</p>
+}
+else
+{
+    <p class="mt-4 text-danger">Errore nel caricamento dei dati. Assicurati che il controller sia configurato correttamente.</p>
+}
