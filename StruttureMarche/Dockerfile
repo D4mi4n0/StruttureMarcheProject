@@ -1,28 +1,32 @@
-# Vedere https://aka.ms/customizecontainer per informazioni su come personalizzare il contenitore di debug e su come Visual Studio usa questo Dockerfile per compilare le immagini per un debug più rapido.
-
-# Questa fase viene usata durante l'esecuzione da Visual Studio in modalità rapida (impostazione predefinita per la configurazione di debug)
+# Fase 1: Runtime di base
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-
-# Questa fase viene usata per compilare il progetto di servizio
+# Fase 2: Costruzione del progetto
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copia entrambi i progetti
 COPY ["StruttureMarche/StruttureMarche.csproj", "StruttureMarche/"]
-RUN dotnet restore "./StruttureMarche/StruttureMarche.csproj"
+
+# Esegui il restore per tutti i progetti
+RUN dotnet restore "StruttureMarche/StruttureMarche.csproj"
+
+# Copia tutti i file sorgente
 COPY . .
+
+# Compila il progetto
 WORKDIR "/src/StruttureMarche"
-RUN dotnet build "./StruttureMarche.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build -c Release -o /app/build
 
-# Questa fase viene usata per pubblicare il progetto di servizio da copiare nella fase finale
+# Fase 3: Pubblicazione
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./StruttureMarche.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Questa fase viene usata nell'ambiente di produzione o durante l'esecuzione da Visual Studio in modalità normale (impostazione predefinita quando non si usa la configurazione di debug)
+# Fase 4: Immagine finale per l'esecuzione
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "StruttureMarche.dll"]
