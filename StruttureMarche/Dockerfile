@@ -1,32 +1,29 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# Vedere https://aka.ms/customizecontainer per informazioni su come personalizzare il contenitore di debug e su come Visual Studio usa questo Dockerfile per compilare le immagini per un debug più rapido.
 
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
+# Questa fase viene usata durante l'esecuzione da Visual Studio in modalità rapida (impostazione predefinita per la configurazione di debug)
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
 
-#STAGE BASE (Runtime)
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base #immagine base di ASP.NET Core 6.0
-WORKDIR /app #imposta la directory di lavoro all'interno del container
-EXPOSE 80 #HTTP
-EXPOSE 443 #HTTPS
 
-#STAGE BUILD
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build #immagine di sviluppo (SDK) di ASP.NET Core 6.0
+# Questa fase viene usata per compilare il progetto di servizio
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MelbourneCoworkingSpaces.Web.csproj", "."] #copia il file di progetto nel container
-RUN dotnet restore "./MelbourneCoworkingSpaces.Web.csproj" #ripristina i pacchetti NuGet
+COPY ["StruttureMarche/StruttureMarche.csproj", "StruttureMarche/"] 
+COPY ["Marche.modelli/Marche.modelli.csproj", "Marche.modelli/"]
+RUN dotnet restore "./StruttureMarche/StruttureMarche.csproj"
+COPY . .
+WORKDIR "/src/StruttureMarche"
+RUN dotnet build "./StruttureMarche.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-COPY . . #copia tutti i file del progetto nel container
-WORKDIR "/src/."
-RUN dotnet build "MelbourneCoworkingSpaces.Web.csproj" -c Release -o /app/build
-#compila il progetto in modalit� Release e output nella directory /app/build
-
-#STAGE DI PUBBLICAZIONE
+# Questa fase viene usata per pubblicare il progetto di servizio da copiare nella fase finale
 FROM build AS publish
-RUN dotnet publish "MelbourneCoworkingSpaces.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
-#compila e pubblica l'applicazione in modalit� Release nella directory /app/publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./StruttureMarche.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-#STAGE FINALE (Runtime)
+# Questa fase viene usata nell'ambiente di produzione o durante l'esecuzione da Visual Studio in modalità normale (impostazione predefinita quando non si usa la configurazione di debug)
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish . #copia i file pubblicati dallo stage di pubblicazione
-ENTRYPOINT ["dotnet", "MelbourneCoworkingSpaces.Web.dll"] #specifica il comando di avvio dell'applicazione
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "StruttureMarche.dll"]
