@@ -6,7 +6,7 @@
 
 1. 🔎 **Visualizzazione delle Strutture nelle Marche**: Mostra una lista di tutti le strutture ricettive nelle Marche, nella pagina di ricerca.
 2. 📑 **Filtraggio e Ricerca**: Permette di filtrare le strutture in base alla denominazione, al comune o alla provincia.
-3. 📡 **Servizio SOAP**: Fornisce un endpoint SOAP (/FunctionMarche.wsdl) per ottenere la lista delle strutture nelle Marche in formato XML.
+3. 📡 **Servizio SOAP**: Fornisce un endpoint SOAP (**/FunctionMarche.wsdl**) per ottenere la lista delle strutture nelle Marche in formato XML.
 
 ## 📦 Come installare il progetto?
 
