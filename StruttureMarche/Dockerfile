@@ -11,6 +11,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["StruttureMarche/StruttureMarche.csproj", "StruttureMarche/"]
+COPY ["Marche.modelli/Marche.modelli.csproj", "Marche.modelli/"]
 RUN dotnet restore "./StruttureMarche/StruttureMarche.csproj"
 COPY . .
 WORKDIR "/src/StruttureMarche"
