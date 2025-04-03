@@ -45,7 +45,7 @@
    ```bash
    docker rm strutture-marche-container
 
-Per riusare il docker, ripartire dal punto 2.
+Per riusare il docker (se rimosso), ripartire dal punto 1.
 
 ## 🤝 Contributori
 
