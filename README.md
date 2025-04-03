@@ -15,9 +15,9 @@
    git clone https://github.com/D4mi4n0/StruttureMarcheProject.git
 
 2. Apri il progetto in Visual Studio 2022:
-   -Apri Visual Studio;
-   -Seleziona "Apri un progetto o una soluzione";
-   -Naviga fino alla cartella del progetto e seleziona il file .sln.
+   - Apri Visual Studio;
+   - Seleziona "Apri un progetto o una soluzione";
+   - Naviga fino alla cartella del progetto e seleziona il file .sln.
 
 3. Esegui l'Applicazione: Premi F5 o clicca su "Esegui" per avviare l'applicazione in modalità debug.
 
@@ -49,5 +49,5 @@ Per riusare il docker, ripartire dal punto 2.
 
 ## 🤝 Contributori
 
--Damiano Montanaro
--Riccardo Imani Noobar
+- Damiano Montanaro
+- Riccardo Imani Noobar
