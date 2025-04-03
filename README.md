@@ -51,3 +51,7 @@ Per riusare il docker, ripartire dal punto 2.
 
 - Damiano Montanaro
 - Riccardo Imani Noobar
+
+## Un'ultima cosa...
+
+Abbiate pietà di noi, abbiamo sofferto come dei dromedari nel fare questo progetto.
