@@ -25,6 +25,8 @@
 
 ## 🐳 Docker
 
+Apri il terminale in Visual Studio e segui i passaggi qui sotto:
+
 1. **Crea l'immagine docker**:
    ```bash
    docker build -t strutture-marche -f StruttureMarche/Dockerfile .
