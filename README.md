@@ -51,8 +51,8 @@ Per riusare il docker, ripartire dal punto 1.
 
 ## 🤝 Contributori
 
-- Damiano Montanaro
-- Riccardo Imani Noobar
+- Damiano Montanaro (mat. 122407)
+- Riccardo Imani Noobar (mat. 123012)
 
 ## Un'ultima cosa...
 
